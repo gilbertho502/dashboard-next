@@ -24,11 +24,11 @@ export async function createInvoice(formData: FormData){
         status: formData.get('status'),
     })
 
-    const amountiNCents = amount *100
+    const amountInCents = amount *100
     //fecha actual anio mes dia
     const [date] = new Date().toISOString().split('T')
     // const otherrawFormData =  Object.fromEntries(formData.entries())
     await sql`
     INSERT INTO invoices (customer_id, amount, status, date)
-    VALUES (${customerId}, ${amountiNCents}, ${status}, ${date})`
+    VALUES (${customerId}, ${amountInCents}, ${status}, ${date})`
 }
