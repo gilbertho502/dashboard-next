@@ -1,14 +1,14 @@
 'use server';
 // los archivos son de servidor, no se ejecuta ni se envia al cliente
 import {z} from 'zod'
-import { Invoice}  from './definitions'
 import { sql } from '@vercel/postgres'
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 const CreateInvoiceSchema = z.object({
     id: z.string(),
     customerId: z.string(),
-    amount: z.number(),
+    amount: z.coerce.number(),
     status: z.enum(['pending', 'paid']),
     date: z.string()
 })
@@ -29,11 +29,11 @@ export async function createInvoice(formData: FormData){
     //fecha actual anio mes dia
     const [date] = new Date().toISOString().split('T')
 
-    console.log(customerId, amountInCents, status, date)
     // const otherrawFormData =  Object.fromEntries(formData.entries())
     await sql`
     INSERT INTO invoices (customer_id, amount, status, date)
     VALUES (${customerId}, ${amountInCents}, ${status}, ${date})`
 
-    revalidatePath('dashboard/invoices')
+    revalidatePath('/dashboard/invoices')
+    redirect('/dashboard/invoices')
 }
