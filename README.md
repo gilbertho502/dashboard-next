@@ -15,3 +15,5 @@ npm i or npm install
 
 ### Step 4: run the project
 npm run dev
+
+##Funcionamiento: dirigirse a => "https://dashboard-with-next.netlify.app/dashboard"
