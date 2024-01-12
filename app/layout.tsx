@@ -10,9 +10,9 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${montserrat.className} antialiased`}>
         {children}</body>
-        <footer className='py-10 flex justify-center items-center'>
+        {/* <footer className='py-10 flex justify-center items-center'>
           Made by Gilberto 
-        </footer>
+        </footer> */}
     </html>
   );
 }
