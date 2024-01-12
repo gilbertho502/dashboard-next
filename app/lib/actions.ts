@@ -3,6 +3,7 @@
 import {z} from 'zod'
 import { Invoice}  from './definitions'
 import { sql } from '@vercel/postgres'
+import { revalidatePath } from 'next/cache';
 
 const CreateInvoiceSchema = z.object({
     id: z.string(),
@@ -27,8 +28,12 @@ export async function createInvoice(formData: FormData){
     const amountInCents = amount *100
     //fecha actual anio mes dia
     const [date] = new Date().toISOString().split('T')
+
+    console.log(customerId, amountInCents, status, date)
     // const otherrawFormData =  Object.fromEntries(formData.entries())
     await sql`
     INSERT INTO invoices (customer_id, amount, status, date)
     VALUES (${customerId}, ${amountInCents}, ${status}, ${date})`
+
+    revalidatePath('dashboard/invoices')
 }
